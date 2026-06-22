@@ -13,10 +13,15 @@ import { api } from '../../services/api';
 import { CourseResponse } from '../../types/api';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../types/navigation';
+import CourseCard from '../../components/CourseCard';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-type HomeScreenNavigationProp = NativeStackNavigationProp<MainStackParamList, "Home">;
-type Props = {navigation: HomeScreenNavigationProp}
-export default function HomeScreen({navigation}: Props) {
+type HomeScreenNavigationProp = NativeStackNavigationProp<
+  MainStackParamList,
+  'Home'
+>;
+type Props = { navigation: HomeScreenNavigationProp };
+export default function HomeScreen({ navigation }: Props) {
   const logout = useAuthStore(state => state.logout);
 
   const [courses, setCourses] = useState<Course[]>([]);
@@ -26,7 +31,7 @@ export default function HomeScreen({navigation}: Props) {
     try {
       setLoading(true);
       const response = await api.get<CourseResponse>('/courses');
-      console.log(courses)
+      console.log(courses);
       setCourses(response.data.courses);
     } catch (error) {
       console.log(error);
@@ -38,45 +43,39 @@ export default function HomeScreen({navigation}: Props) {
     fetchCourses();
   }, []);
 
-  const handlePurchase = async (courseId: string) =>{
+  const handlePurchase = async (courseId: string) => {
     try {
-        const response = await api.post(`/user/purchase/${courseId}`);
-        console.log(response.data)
+      const response = await api.post(`/user/purchase/${courseId}`);
+      console.log(response.data);
     } catch (error: any) {
-        console.log(error.response?.data)
+      console.log(error.response?.data);
     }
-  }
+  };
 
   if (loading) {
-    return <ActivityIndicator size="large" />;
+    return <ActivityIndicator size="large" style={{justifyContent:"center", alignItems:"center"}} />;
   }
   return (
-    <View style={styles.container}>
-     
+    <SafeAreaView style={styles.container}>
       <FlatList
         data={courses}
         keyExtractor={item => item._id}
-        renderItem={({ item }) => 
-        <View style={styles.flatList}>
-            <Text>{item.title}</Text>
-            <Text>${item.price}</Text>
-            <Text>{item.description}</Text>
-            <Button
-                title='Purchase'
-                onPress={()=>handlePurchase(item._id)}
-            />
-        </View>}
+        renderItem={({ item }) => (
+          <CourseCard course={item} onPurchase={handlePurchase} />
+        )}
       />
-       <Button title="Logout" onPress={logout} />
-       <Button title='My Courses' onPress={()=>navigation.navigate("MyCourses")}/>
-    </View>
+      <Button title="Logout" onPress={logout} />
+      <Button
+        title="My Courses"
+        onPress={() => navigation.navigate('MyCourses')}
+      />
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    marginTop:40
   },
   flatList: {
     padding: 16,
