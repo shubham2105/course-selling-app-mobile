@@ -3,6 +3,9 @@ import {View, Text, StyleSheet, TextInput, TouchableOpacity} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import { AuthStackParamList } from '../../types/navigation';
 import { useState } from 'react';
+import { api } from '../../services/api';
+import { storage } from '../../storage/mmkv';
+import { useAuthStore } from '../../store/authStore';
 
 type LoginScreenNavigationProp = 
     NativeStackNavigationProp<AuthStackParamList, "Login">
@@ -11,12 +14,24 @@ type Props = {navigation: LoginScreenNavigationProp}
 export default function LoginScreen({navigation}:Props){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const login = useAuthStore(state=> state.login)
 
-    const handleLogin = () =>{
-        console.log("Login Button Pressed")
-        console.log({
-            email, password
-        })
+    const handleLogin = async () =>{
+        try {
+            const response = await api.post("/user/login", 
+                {email, password}
+            );
+            const token = response.data.token;
+            if(token){
+                login(token);
+                console.log("Login Sucessfull");
+                console.log(useAuthStore.getState());
+                // storage.set("token", token);
+                // console.log("Stored token:", storage.getString("token"))
+            }
+        } catch (error:any) {
+            console.log(error.response?.data)
+        }
     }
     return(
         <SafeAreaView style={styles.safeArea}>
