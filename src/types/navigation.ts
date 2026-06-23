@@ -8,4 +8,5 @@ export type MainStackParamList = {
         courseId: string
     };
     MyCourses: undefined,
+    Profile: undefined,
 }

@@ -1,4 +1,4 @@
-import { Course } from "."
+import { Course, User } from "."
 
 export interface LoginResponse{
     message: string, 
@@ -19,4 +19,6 @@ export interface SingleCourseResponse {
     course: Course;
     isPurchased: boolean,
 }
- 
+ export interface ProfileResponse {
+    user: User;
+ }

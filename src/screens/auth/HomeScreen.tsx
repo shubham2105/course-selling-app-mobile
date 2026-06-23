@@ -53,7 +53,12 @@ export default function HomeScreen({ navigation }: Props) {
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" style={{justifyContent:"center", alignItems:"center"}} />;
+    return (
+      <ActivityIndicator
+        size="large"
+        style={{ justifyContent: 'center', alignItems: 'center' }}
+      />
+    );
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -62,9 +67,11 @@ export default function HomeScreen({ navigation }: Props) {
         keyExtractor={item => item._id}
         renderItem={({ item }) => (
           <CourseCard
-            course={item} 
+            course={item}
             onPurchase={handlePurchase}
-            onPress={()=>navigation.navigate("CourseDetails",{courseId: item._id})}
+            onPress={() =>
+              navigation.navigate('CourseDetails', { courseId: item._id })
+            }
           />
         )}
       />
@@ -73,6 +80,7 @@ export default function HomeScreen({ navigation }: Props) {
         title="My Courses"
         onPress={() => navigation.navigate('MyCourses')}
       />
+      <Button title="Profile" onPress={() => navigation.navigate('Profile')} />
     </SafeAreaView>
   );
 }

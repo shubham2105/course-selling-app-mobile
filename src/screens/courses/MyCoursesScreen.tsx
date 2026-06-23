@@ -11,8 +11,12 @@ import { api } from '../../services/api';
 import { CourseResponse } from '../../types/api';
 import CourseCard from '../../components/CourseCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { MainStackParamList } from '../../types/navigation';
 
-export default function MyCoursesScreen() {
+type Props = NativeStackScreenProps<MainStackParamList, "MyCourses">;
+
+export default function MyCoursesScreen({navigation}: Props) {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -40,7 +44,7 @@ export default function MyCoursesScreen() {
         keyExtractor={item => item._id}
         ListEmptyComponent={<Text>No purchased courses yet</Text>}
         renderItem={({ item }) => (
-          <CourseCard course={item} onPurchase={fetchMyCourses} />
+          <CourseCard course={item} onPurchase={fetchMyCourses} onPress={()=> navigation.navigate("CourseDetails", {courseId: item._id})}/>
         )}
       />
     </SafeAreaView>
