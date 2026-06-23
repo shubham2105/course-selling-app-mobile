@@ -12,6 +12,7 @@ type Props = {route: CourseDetailsRouteProp}
 export default function CourseDetailsScreen({route,}: Props){
     const [course, setCourse] = useState<Course | null>(null);
     const [loading, setLoading] = useState(false);
+    const [isPurchased, setIsPurchased] = useState(false)
     const fetchCourse = async () =>{
         try {
             setLoading(true);
@@ -19,6 +20,7 @@ export default function CourseDetailsScreen({route,}: Props){
             console.log(response.data)
 
             setCourse(response.data.course)
+            setIsPurchased(response.data.isPurchased)
         } catch (error) {
             console.log(error);
         }
@@ -50,7 +52,9 @@ export default function CourseDetailsScreen({route,}: Props){
             <Text style={styles.title}>{course?.title}</Text>
             <Text style={styles.price}>${course?.price}</Text>
             <Text style={styles.description}>{course?.description}</Text>
-            <Button title="Purchase Course" onPress={handlePurchase}/>
+            {isPurchased ? (<Text style={styles.purchased}>
+                Course Purchased
+            </Text>):(<Button title="Purchase Course" onPress={handlePurchase}/>)}
            </View>
         </SafeAreaView>
     )
@@ -73,4 +77,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 24,
   },
+  purchased:{
+    fontSize:16,
+    fontWeight:"600",
+    marginTop:20,
+    color:"green"
+  }
 });

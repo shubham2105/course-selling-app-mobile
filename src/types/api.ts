@@ -17,5 +17,6 @@ export interface PurchaseResponse {
 }
 export interface SingleCourseResponse {
     course: Course;
+    isPurchased: boolean,
 }
  
