@@ -1,14 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Course } from "../types";
 
 interface CourseCardProps {
     course: Course;
     onPurchase? : (courseId: string) => void;
+    onPress?: () => void;
 };
 
-export default function CourseCard ({course, onPurchase}:CourseCardProps){
+export default function CourseCard ({course, onPurchase, onPress}:CourseCardProps){
     return(
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={onPress}>
             <Text style={styles.title}>
                 {course.title}
             </Text>
@@ -20,7 +21,7 @@ export default function CourseCard ({course, onPurchase}:CourseCardProps){
             <Text style={styles.description}>
                 {course.description}
             </Text>
-        </View>
+        </TouchableOpacity>
     )
 }
 

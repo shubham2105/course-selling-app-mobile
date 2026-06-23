@@ -4,7 +4,7 @@ export type AuthStackParamList = {
 }
 export type MainStackParamList = {
     Home: undefined,
-    courseDetails:{
+    CourseDetails:{
         courseId: string
     };
     MyCourses: undefined,

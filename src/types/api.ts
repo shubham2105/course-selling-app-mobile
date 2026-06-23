@@ -15,4 +15,7 @@ export interface PurchaseResponse {
         price: number;
     }
 }
+export interface SingleCourseResponse {
+    course: Course;
+}
  

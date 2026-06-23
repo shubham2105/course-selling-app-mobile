@@ -61,7 +61,11 @@ export default function HomeScreen({ navigation }: Props) {
         data={courses}
         keyExtractor={item => item._id}
         renderItem={({ item }) => (
-          <CourseCard course={item} onPurchase={handlePurchase} />
+          <CourseCard
+            course={item} 
+            onPurchase={handlePurchase}
+            onPress={()=>navigation.navigate("CourseDetails",{courseId: item._id})}
+          />
         )}
       />
       <Button title="Logout" onPress={logout} />
